@@ -1,3 +1,4 @@
 <?php
-echo "lmao yeet off myself off a cliff";
+echo "lmao yeet myself off a cliff - ";
+require_once "../app/bootstrap.php";
 ?>
