@@ -1,5 +1,4 @@
 <?php
-
 /*
  * http://hostname/veeb/kontroller/meetod/parameeter(id)
  * $_GET['url'] = 'kontroller/meetod/parameeter(id)'
@@ -15,12 +14,12 @@ class Core
     public function __construct()
     {
         $url = $this->getUrl();
-        // set up the controllers
+        // set up the controller
         if(file_exists('../app/controllers/'.ucwords($url[0]).'.php')){
             $this->currentController = ucwords($url[0]);
             unset($url[0]);
         }
-        // create controllers object
+        // create controller object
         require_once '../app/controllers/'.$this->currentController.'.php';
         $this->currentController = new $this->currentController();
         // check the method exist and set up it
@@ -32,6 +31,7 @@ class Core
         }
         // set up params
         $this->params = $url ? array_values($url) : array();
+
         // call a callback function with array of params
         call_user_func_array(array($this->currentController, $this->currentMethod), $this->params);
     }

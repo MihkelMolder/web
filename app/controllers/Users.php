@@ -1,7 +1,11 @@
 <?php
 
-class Users extends Controller{
+class users extends Controller{
     public function login(){
         $this->view('users/login');
+    }
+
+    public function register(){
+        $this->view('users/register');
     }
 }
