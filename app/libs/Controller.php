@@ -14,4 +14,11 @@ class Controller
             die($viewFile.'.php does not exist');
         }
     }
+
+    // load model
+    public function model($modelFile){
+        require_once '../app/models/'.$modelFile.'.php';
+        $model = new $modelFile();
+        return $model;
+    }
 }
