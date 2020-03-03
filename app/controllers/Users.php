@@ -23,6 +23,8 @@ class Users extends Controller
             // validate email
             if(empty($data['email'])){
                 $data['email_err'] = 'Please enter the email';
+            } else if(!$this->userModel->findUserByEmail($data['email'])){
+                $data['email_err'] = 'No user found';
             }
             // validate password
             if(empty($data['pass'])){
@@ -30,7 +32,14 @@ class Users extends Controller
             }
             // if errors are empty - login user
             if(empty($data['email_err']) and empty($data['pass_err']) ){
-                echo 'login in';
+                // set log in
+                $loggedInUser = $this->userModel->login($data['email'], $data['pass']);
+                if(!$loggedInUser){
+                    $data['pass_err'] = 'Password is incorrect';
+                    $this->view('users/login', $data);
+                } else {
+                    $this->createUserSession($loggedInUser);
+                }
             } else {
                 // load view with errors
                 $this->view('users/login', $data);
@@ -94,5 +103,18 @@ class Users extends Controller
         } else {
             $this->view('users/register');
         }
+    }
+    // create session
+    public function createUserSession($user){
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_name'] = $user->name;
+        $_SESSION['user_email'] = $user->email;
+        header('Location: '.URLROOT);
+    }
+    // logout user
+    public function logout(){
+        session_unset();
+        session_destroy();
+        header('Location: '.URLROOT);
     }
 }
