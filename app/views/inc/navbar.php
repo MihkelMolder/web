@@ -9,6 +9,9 @@
                 <li class="nav-item">
                     <a href="<?php echo URLROOT;?>" class="nav-link">Home</a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?php echo URLROOT;?>/posts" class="nav-link">Post</a>
+                </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
