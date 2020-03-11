@@ -1,37 +1,19 @@
-<?php require_once APPROOT . '/views/inc/header.php';?>
-<?php
-session_start();
-include_once("db.php");
-
-if(isset($_POST['post'])){
-  $title = strip_tags($_POST['title']);
-  $content = strip_tags($_POST['content']);
-
-  $title = mysqli_real_escape_string($db, $title);
-  $content = mysqli_real_escape_string($db, $content);
-
-  $date = date("jS \of F Y h:i:s A");
-
-
-  $sql = "INSERT INTO posts (title, content, date) VALUES ('$title', '$content', '$date')";
-
-  sleep (1);
-  mysqli_query($db, $sql);
-  header("Location: ../pages");
-}
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-  <form action="index.php" method="post" enctype="multipart/form-data">
-    <input placeholder="Title" name="title" type="text" autofocus size="50"><br>
-    <textarea placeholder="Content" name="content" rows="20" cols="50"></textarea><br>
-    <input name="post" type="submit" value="Post"><hr>
-
-  </form>
-</body>
-</html>
-<?php require_once APPROOT . '/views/inc/footer.php';?>
+<?php require_once APPROOT.'/views/inc/header.php';?>
+<?php flashShow('post_message');?>
+<?php if(isset($_SESSION['user_id'])) :?>
+    <a href="<?php echo URLROOT?>/posts/add" class="btn btn-info">Add Post</a>
+<?php endif;?>
+    <div class="row mb-3">
+        <div class="col">
+            <h1>Posts</h1>
+        </div>
+        <?php foreach ($data as $post):?>
+            <div class="card card-body mb-3">
+                <h4 class="card-title"><?php echo $post->title;?></h4>
+                <div class="bg-light p-2 mb-3">Writen by <?php echo $post->name;?> on <?php echo $post->created_at;?></div>
+                <div class="card-text mb-3"><?php echo substr($post->content, 0, 300);?>...</div>
+                <a href="<?php echo URLROOT?>/posts/show/<?php echo $post->postID;?>" class="btn btn-info">Read More</a>
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php require_once APPROOT.'/views/inc/footer.php';?>
